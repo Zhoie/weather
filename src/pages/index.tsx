@@ -2,7 +2,7 @@ import Head from "next/head"
 import Image from "next/image"
 // import React from "react"
 import { weatherType, weatherData } from "@/libs/weatherType"
-// import { unsplashType } from "@/libs/unsplashType"
+import { unsplashType } from "@/libs/unsplashType"
 import { FaSearch } from "react-icons/fa"
 import { toast } from "react-hot-toast"
 
@@ -14,11 +14,11 @@ const styles = {
   searchBtn: 'flex items-center justify-center w-12 h-full text-2xl text-black font-semibold active:scale-90  duration-200',
   // bgImg: 'max-w-[30ch] mx-auto justify-center items-center rounded-lg shadow-md',
   bodyContainer: 'flex flex-col',
-  weatherContainer: 'flex flex-col ml-10 max-w-[20ch] h-full mt-4',
-  weatherTitle: 'text-4xl mt-4 font-bold border-4 text-center p-2 rounded-lg border-black',
-  weatherContent: 'text-xl font-semibold',
+  weatherContainer: 'flex flex-col ml-10 max-w-[20ch] h-full',
+  weatherTitle: 'text-4xl mt-4 font-bold border-4 text-center p-2 rounded-lg border-black ',
+  weatherContent: 'first:mt-4 text-xl font-semibold',
   // weatherContainer: 'flex flex-col ml-10 max-w-[20ch] h-full mt-4',
-
+  gradientColor:'hover:scale-110  hover:cursor-pointer hover:bg-gradient-to-br  hover:from-zinc-400 hover:to-sky-200 transform-color duration-500',
 
 }
 
@@ -31,10 +31,9 @@ export default function Home({ data }: weatherData) {
 
 
   //unplash picture data 
-  // const [unsplash, setUnsplash] = useState<unsplashType>()
+  const [unsplash, setUnsplash] = useState<unsplashType>()
 
   const handleSearchClick = async () => {
-
     setLoading(true);
     if (!weatherData.name && !loading) {
       setLoading(false);
@@ -75,7 +74,14 @@ export default function Home({ data }: weatherData) {
   }, [])
 
 
+//jump to the page of the city
+  const handleCityClick = async () => {
 
+    window.open(`https://unsplash.com/s/photos/${weatherData.name}`, '_blank')
+  }
+
+
+ 
 
 
   // const getUnsplashData = async () => {
@@ -121,7 +127,7 @@ export default function Home({ data }: weatherData) {
       <div className={styles.bodyContainer} >
         {/* temperature */}
         <div className={styles.weatherContainer} >
-          <h1 className={styles.weatherTitle}>{weatherData.name}</h1>
+          <button type="button" className={`${styles.weatherTitle}${styles.gradientColor}`} onClick={handleCityClick}>{weatherData.name}</button>
           <p className={styles.weatherContent}>Temprature: {weatherData.main.temp}°C</p>
           <p className={styles.weatherContent}>Feels like: {weatherData.main.feels_like}°C</p>
           <p className={styles.weatherContent}>Max: {weatherData.main.temp_max}°C</p>
@@ -140,16 +146,14 @@ export default function Home({ data }: weatherData) {
           <p className={styles.weatherContent}>Speed: {weatherData.wind.speed}m/s</p>
           <p className={styles.weatherContent}>Deg: {weatherData.wind.deg}°</p>
           <p className={styles.weatherContent}>gust: {weatherData.wind.gust}meter/sec</p>
-
-
         </div>
-
       </div>
 
 
     </div>
   )
 }
+
 
 // api
 
